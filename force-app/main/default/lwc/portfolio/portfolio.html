@@ -1,65 +1,129 @@
 <template>
     <lightning-card title="My Portfolio" icon-name="standard:account">
         <template if:true={hasAccount}>
-            <div class="slds-p-around_medium">
-                <div class="slds-grid slds-gutters slds-wrap">
-                    <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-text-align_center">
+            <div class="slds-p-around_medium portfolio-root">
+
+                <!-- ── HERO: Photo + Basic Info ─────────────────────────── -->
+                <div class="hero-grid">
+                    <div class="hero-photo-col">
                         <template if:true={account.Photo_URL__c}>
                             <img src={account.Photo_URL__c} alt={account.Name} class="portfolio-photo" />
                         </template>
                         <template if:false={account.Photo_URL__c}>
-                            <lightning-icon icon-name="utility:user" size="large"></lightning-icon>
+                            <div class="photo-placeholder">
+                                <lightning-icon icon-name="utility:user" size="large"></lightning-icon>
+                            </div>
                         </template>
                     </div>
-                    <div class="slds-col slds-size_1-of-1 slds-medium-size_9-of-12">
-                        <h1 class="slds-text-heading_large">{account.Name}</h1>
+
+                    <div class="hero-info-col">
+                        <h1 class="hero-name">{account.Name}</h1>
                         <template if:true={account.Professional_Title__c}>
-                            <p class="portfolio-title">{account.Professional_Title__c}</p>
+                            <p class="hero-title">{account.Professional_Title__c}</p>
                         </template>
                         <template if:true={account.Description}>
-                            <p class="slds-p-vertical_small">{account.Description}</p>
+                            <p class="hero-bio">{account.Description}</p>
                         </template>
 
+                        <!-- Skills badges -->
                         <template if:true={skills.length}>
-                            <div class="slds-p-vertical_small">
+                            <div class="skills-row">
                                 <template for:each={skills} for:item="skill">
-                                    <span key={skill.key} class="slds-badge portfolio-badge">{skill.label}</span>
+                                    <span key={skill.key} class="skill-badge">{skill.label}</span>
                                 </template>
                             </div>
                         </template>
 
-                        <div class="slds-p-vertical_small">
+                        <!-- Contact links -->
+                        <div class="contact-row">
                             <template if:true={account.Email__c}>
-                                <p>
-                                    <lightning-icon icon-name="utility:email" size="x-small"></lightning-icon>
-                                    <a href={emailLink}>{account.Email__c}</a>
-                                </p>
+                                <a href={emailLink} class="contact-chip">
+                                    <lightning-icon icon-name="utility:email" size="xx-small"></lightning-icon>
+                                    <span>{account.Email__c}</span>
+                                </a>
                             </template>
                             <template if:true={account.Phone}>
-                                <p>
-                                    <lightning-icon icon-name="utility:call" size="x-small"></lightning-icon>
-                                    {account.Phone}
-                                </p>
+                                <span class="contact-chip">
+                                    <lightning-icon icon-name="utility:call" size="xx-small"></lightning-icon>
+                                    <span>{account.Phone}</span>
+                                </span>
                             </template>
                             <template if:true={account.Website}>
-                                <p>
-                                    <lightning-icon icon-name="utility:world" size="x-small"></lightning-icon>
-                                    <a href={account.Website} target="_blank">{account.Website}</a>
-                                </p>
+                                <a href={account.Website} target="_blank" class="contact-chip">
+                                    <lightning-icon icon-name="utility:world" size="xx-small"></lightning-icon>
+                                    <span>Website</span>
+                                </a>
                             </template>
                             <template if:true={account.LinkedIn_URL__c}>
-                                <p>
-                                    <a href={account.LinkedIn_URL__c} target="_blank">LinkedIn</a>
-                                </p>
+                                <a href={account.LinkedIn_URL__c} target="_blank" class="contact-chip chip-linkedin">LinkedIn</a>
                             </template>
                             <template if:true={account.GitHub_URL__c}>
-                                <p>
-                                    <a href={account.GitHub_URL__c} target="_blank">GitHub</a>
-                                </p>
+                                <a href={account.GitHub_URL__c} target="_blank" class="contact-chip chip-github">GitHub</a>
                             </template>
                         </div>
                     </div>
                 </div>
+
+                <!-- ── PROJECTS ──────────────────────────────────────────── -->
+                <section class="section">
+                    <h2 class="section-heading">Projects</h2>
+                    <div class="projects-grid">
+                        <template for:each={projects} for:item="proj">
+                            <div key={proj.id} class="project-card">
+                                <h3 class="project-title">{proj.title}</h3>
+                                <p class="project-desc">{proj.description}</p>
+                                <p class="project-tech">{proj.tech}</p>
+                                <a href={proj.link} target="_blank" class="project-link">View Project →</a>
+                            </div>
+                        </template>
+                    </div>
+                </section>
+
+                <!-- ── EXPERIENCE ────────────────────────────────────────── -->
+                <section class="section">
+                    <h2 class="section-heading">Experience</h2>
+                    <div class="timeline">
+                        <template for:each={experience} for:item="exp">
+                            <div key={exp.id} class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-body">
+                                    <div class="timeline-header">
+                                        <span class="timeline-role">{exp.role}</span>
+                                        <span class="timeline-duration">{exp.duration}</span>
+                                    </div>
+                                    <p class="timeline-company">{exp.company}</p>
+                                    <p class="timeline-desc">{exp.description}</p>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </section>
+
+                <!-- ── EDUCATION + CERTIFICATIONS (2-col grid) ───────────── -->
+                <div class="two-col-grid">
+                    <section class="section">
+                        <h2 class="section-heading">Education</h2>
+                        <template for:each={education} for:item="edu">
+                            <div key={edu.id} class="info-card">
+                                <p class="info-card-title">{edu.degree}</p>
+                                <p class="info-card-sub">{edu.institution}</p>
+                                <p class="info-card-meta">{edu.year} &nbsp;|&nbsp; {edu.grade}</p>
+                            </div>
+                        </template>
+                    </section>
+
+                    <section class="section">
+                        <h2 class="section-heading">Certifications</h2>
+                        <template for:each={certifications} for:item="cert">
+                            <div key={cert.id} class="info-card">
+                                <p class="info-card-title">{cert.name}</p>
+                                <p class="info-card-sub">{cert.issuer}</p>
+                                <p class="info-card-meta">{cert.year}</p>
+                            </div>
+                        </template>
+                    </section>
+                </div>
+
             </div>
         </template>
 
@@ -69,7 +133,7 @@
 
         <template if:true={showEmptyState}>
             <div class="slds-p-around_medium">
-                No portfolio account found. Mark an Account record's "Is Portfolio Account" checkbox to display it here.
+                No portfolio account found. Mark an Account's "Is Portfolio Account" checkbox to display it here.
             </div>
         </template>
     </lightning-card>
