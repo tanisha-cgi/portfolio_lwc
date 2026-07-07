@@ -1,2 +1,2 @@
 Here is tha attached screenshot of the portfolio visible on my home page 
-![portfolio](C:\Users\TanishaSharma\Downloads\lwc_portfolio-main\lwc_portfolio-main\Screenshot 2026-07-07 152221.png)
+![portfolio photo](lwc_portfolio-main\Screenshot 2026-07-07 152221.png)
