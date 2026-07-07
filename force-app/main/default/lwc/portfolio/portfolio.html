@@ -1,0 +1,76 @@
+<template>
+    <lightning-card title="My Portfolio" icon-name="standard:account">
+        <template if:true={hasAccount}>
+            <div class="slds-p-around_medium">
+                <div class="slds-grid slds-gutters slds-wrap">
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-text-align_center">
+                        <template if:true={account.Photo_URL__c}>
+                            <img src={account.Photo_URL__c} alt={account.Name} class="portfolio-photo" />
+                        </template>
+                        <template if:false={account.Photo_URL__c}>
+                            <lightning-icon icon-name="utility:user" size="large"></lightning-icon>
+                        </template>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_9-of-12">
+                        <h1 class="slds-text-heading_large">{account.Name}</h1>
+                        <template if:true={account.Professional_Title__c}>
+                            <p class="portfolio-title">{account.Professional_Title__c}</p>
+                        </template>
+                        <template if:true={account.Description}>
+                            <p class="slds-p-vertical_small">{account.Description}</p>
+                        </template>
+
+                        <template if:true={skills.length}>
+                            <div class="slds-p-vertical_small">
+                                <template for:each={skills} for:item="skill">
+                                    <span key={skill.key} class="slds-badge portfolio-badge">{skill.label}</span>
+                                </template>
+                            </div>
+                        </template>
+
+                        <div class="slds-p-vertical_small">
+                            <template if:true={account.Email__c}>
+                                <p>
+                                    <lightning-icon icon-name="utility:email" size="x-small"></lightning-icon>
+                                    <a href={emailLink}>{account.Email__c}</a>
+                                </p>
+                            </template>
+                            <template if:true={account.Phone}>
+                                <p>
+                                    <lightning-icon icon-name="utility:call" size="x-small"></lightning-icon>
+                                    {account.Phone}
+                                </p>
+                            </template>
+                            <template if:true={account.Website}>
+                                <p>
+                                    <lightning-icon icon-name="utility:world" size="x-small"></lightning-icon>
+                                    <a href={account.Website} target="_blank">{account.Website}</a>
+                                </p>
+                            </template>
+                            <template if:true={account.LinkedIn_URL__c}>
+                                <p>
+                                    <a href={account.LinkedIn_URL__c} target="_blank">LinkedIn</a>
+                                </p>
+                            </template>
+                            <template if:true={account.GitHub_URL__c}>
+                                <p>
+                                    <a href={account.GitHub_URL__c} target="_blank">GitHub</a>
+                                </p>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template if:true={error}>
+            <div class="slds-p-around_medium slds-text-color_error">{error}</div>
+        </template>
+
+        <template if:true={showEmptyState}>
+            <div class="slds-p-around_medium">
+                No portfolio account found. Mark an Account record's "Is Portfolio Account" checkbox to display it here.
+            </div>
+        </template>
+    </lightning-card>
+</template>

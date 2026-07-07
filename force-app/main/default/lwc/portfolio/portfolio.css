@@ -1,0 +1,19 @@
+.portfolio-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.portfolio-title {
+    color: #706e6b;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.05rem;
+}
+
+.portfolio-badge {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
